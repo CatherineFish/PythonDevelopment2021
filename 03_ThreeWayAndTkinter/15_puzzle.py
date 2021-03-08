@@ -1,6 +1,7 @@
 import tkinter as tk
 from random import shuffle, seed
 from functools import partial
+from tkinter import messagebox
 
 seed()
 PUZZLE_NUM = 15
@@ -56,7 +57,6 @@ class Application(tk.Frame):
             self.numbers[i].set(self.listNum[i])
             self.listOfNumberButton[i].grid(row=1 + int(i / 4), column=int(i % 4), sticky="NEWS")        
         
-
     
     def exit(self):
         """Handler for the exit button that closes the application window"""
@@ -89,7 +89,8 @@ class Application(tk.Frame):
                 if self.grid_slaves(row=1 + int(i / 4), column=int(i % 4))[0]['text'] != i + 1:
                     break
             if i == PUZZLE_NUM - 1:
-                print("OK")
+                messagebox.showinfo(message="You win!")
+                self.new()
 
 app = Application()
 app.master.title('15 PUZZLE')
