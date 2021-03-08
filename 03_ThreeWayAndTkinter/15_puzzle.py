@@ -1,4 +1,7 @@
 import tkinter as tk
+from random import shuffle, seed
+
+seed()
 
 class Application(tk.Frame):
     def __init__(self, master=None):
@@ -24,8 +27,11 @@ class Application(tk.Frame):
         self.newButton = tk.Button(self, text='New', command=self.new)
         self.exitButton = tk.Button(self, text='Exit', command=self.exit)
         self.listOfNumberButton = list()
+
+        self.numbers = list(range(1, 17))
+        shuffle(self.numbers)
         for i in range(15):
-            self.listOfNumberButton.append(tk.Button(self, text=i + 1, command=self.move))
+            self.listOfNumberButton.append(tk.Button(self, text=self.numbers[i], command=self.move))
 
         self.newButton.grid(row=0, column=0, columnspan=2, sticky="NEWS")
         self.exitButton.grid(row=0, column=2, columnspan=2, sticky="NEWS")
