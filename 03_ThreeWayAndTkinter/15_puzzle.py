@@ -1,5 +1,6 @@
 import tkinter as tk
 from random import shuffle, seed
+from functools import partial
 
 seed()
 PUZZLE_NUM = 15
@@ -15,6 +16,7 @@ class Application(tk.Frame):
         top.rowconfigure(0, weight=1)
         top.columnconfigure(0, weight=1)
         
+        #Frame configuration
         self.columnconfigure(0, weight=1)
         self.columnconfigure(1, weight=1)
         self.columnconfigure(2, weight=1)
@@ -24,24 +26,26 @@ class Application(tk.Frame):
         self.rowconfigure(3, weight=1)
         self.rowconfigure(4, weight=1)
                 
-
+        #Frame elements
         self.newButton = tk.Button(self, text='New', command=self.new)
         self.exitButton = tk.Button(self, text='Exit', command=self.exit)
         self.listOfNumberButton = list()
         self.numbers = list()
         self.listNum = list(range(1, 17))
 
+        #Button randomization
         for i in range(PUZZLE_NUM):
             self.numbers.append(tk.StringVar())
         for i in range(PUZZLE_NUM):
-            self.listOfNumberButton.append(tk.Button(self, textvariable=self.numbers[i], command=self.move))
+            self.listOfNumberButton.append(tk.Button(self, textvariable=self.numbers[i], command=partial(self.move, i)))
         self.new()
 
-        self.newButton.grid(row=0, column=0, columnspan=2, sticky="NEWS")
-        self.exitButton.grid(row=0, column=2, columnspan=2, sticky="NEWS")
+        #Grid
+        self.newButton.grid(row=0, column=0, columnspan=2,  sticky="NEWS")
+        self.exitButton.grid(row=0, column=2, columnspan=2, sticky="NEWS")   
         for i in range(PUZZLE_NUM):
             self.listOfNumberButton[i].grid(row=1 + int(i / 4), column=int(i % 4), sticky="NEWS")        
-
+        
 
     def new(self):
         """Handler for the new button that changes the values of the number buttons"""
@@ -54,9 +58,11 @@ class Application(tk.Frame):
         """Handler for the exit button that closes the application window"""
         self.quit()
 
-    def move(self):
+
+    def move(self, i):
         """Handler for the button with numbers"""
-        pass
+        print(i)
+        #print(self.listOfNumberButton[i].grid_info()['row'])
     
         
 app = Application()
