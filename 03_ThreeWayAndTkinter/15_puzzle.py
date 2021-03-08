@@ -31,7 +31,7 @@ class Application(tk.Frame):
         self.exitButton = tk.Button(self, text='Exit', command=self.exit)
         self.listOfNumberButton = list()
         self.numbers = list()
-        self.listNum = list(range(1, 16))
+        self.listNum = list(range(1, 1 + PUZZLE_NUM))
 
         #Blank space
         self.blank_row = 4
@@ -82,6 +82,15 @@ class Application(tk.Frame):
             self.listOfNumberButton[i].grid(row=self.blank_row, column=self.blank_col, sticky="NEWS")
             self.blank_col += 1    
         
+        #Check
+        if self.blank_row == 4 and self.blank_col == 3:
+            cur_list = list()
+            for i in range(PUZZLE_NUM):
+                if self.grid_slaves(row=1 + int(i / 4), column=int(i % 4))[0]['text'] != i + 1:
+                    break
+            if i == PUZZLE_NUM - 1:
+                print("OK")
+
 app = Application()
 app.master.title('15 PUZZLE')
 app.mainloop()
