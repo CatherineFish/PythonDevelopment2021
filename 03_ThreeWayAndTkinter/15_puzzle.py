@@ -44,7 +44,7 @@ class Application(tk.Frame):
 
     def exit(self):
         """Handler for the exit button that closes the application window"""
-        pass
+        self.quit()
 
     def move(self):
         """Handler for the button with numbers"""
