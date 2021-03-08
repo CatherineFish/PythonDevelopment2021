@@ -33,6 +33,10 @@ class Application(tk.Frame):
         self.numbers = list()
         self.listNum = list(range(1, 17))
 
+        #Blank space
+        self.blank_row = 4
+        self.blank_col = 3
+
         #Button randomization
         for i in range(PUZZLE_NUM):
             self.numbers.append(tk.StringVar())
@@ -61,10 +65,22 @@ class Application(tk.Frame):
 
     def move(self, i):
         """Handler for the button with numbers"""
-        print(i)
-        #print(self.listOfNumberButton[i].grid_info()['row'])
-    
+        cur_row = self.listOfNumberButton[i].grid_info()['row']
+        cur_col = self.listOfNumberButton[i].grid_info()['column']
+        if (cur_row + 1) == self.blank_row and cur_col == self.blank_col:
+            self.listOfNumberButton[i].grid(row=self.blank_row, column=self.blank_col, sticky="NEWS")
+            self.blank_row -= 1
+        elif (cur_row - 1) == self.blank_row and cur_col == self.blank_col:
+            self.listOfNumberButton[i].grid(row=self.blank_row, column=self.blank_col, sticky="NEWS")
+            self.blank_row += 1    
+        elif cur_row == self.blank_row and (cur_col + 1) == self.blank_col:
+            self.listOfNumberButton[i].grid(row=self.blank_row, column=self.blank_col, sticky="NEWS")
+            self.blank_col -= 1            
+        elif cur_row == self.blank_row and (cur_col - 1) == self.blank_col:
+            self.listOfNumberButton[i].grid(row=self.blank_row, column=self.blank_col, sticky="NEWS")
+            self.blank_col += 1    
         
+
 app = Application()
 app.master.title('15 PUZZLE')
 app.mainloop()
