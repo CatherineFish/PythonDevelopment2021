@@ -52,7 +52,17 @@ class Application(tk.Frame):
 
     def new(self):
         """Handler for the new button that changes the values of the number buttons"""
-        shuffle(self.listNum)
+        f = True
+        while f:
+            shuffle(self.listNum)
+            for i in range(PUZZLE_NUM):
+                sum = 0
+                for j in range(i):
+                    if self.listNum[j] < self.listNum[i]:
+                        sum += 1
+            if not(sum % 2):
+                f = False
+        
         for i in range(PUZZLE_NUM):
             self.numbers[i].set(self.listNum[i])
             self.listOfNumberButton[i].grid(row=1 + int(i / 4), column=int(i % 4), sticky="NEWS")        
