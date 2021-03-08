@@ -44,7 +44,7 @@ class Application(tk.Frame):
 
 
     def new(self):
-        """Handler for the new button"""
+        """Handler for the new button that changes the values of the number buttons"""
         shuffle(self.listNum)
         for i in range(PUZZLE_NUM):
             self.numbers[i].set(self.listNum[i])
