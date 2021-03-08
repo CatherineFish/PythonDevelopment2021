@@ -31,7 +31,7 @@ class Application(tk.Frame):
         self.exitButton = tk.Button(self, text='Exit', command=self.exit)
         self.listOfNumberButton = list()
         self.numbers = list()
-        self.listNum = list(range(1, 17))
+        self.listNum = list(range(1, 16))
 
         #Blank space
         self.blank_row = 4
@@ -65,6 +65,8 @@ class Application(tk.Frame):
 
     def move(self, i):
         """Handler for the button with numbers"""
+
+        #Move
         cur_row = self.listOfNumberButton[i].grid_info()['row']
         cur_col = self.listOfNumberButton[i].grid_info()['column']
         if (cur_row + 1) == self.blank_row and cur_col == self.blank_col:
@@ -80,7 +82,6 @@ class Application(tk.Frame):
             self.listOfNumberButton[i].grid(row=self.blank_row, column=self.blank_col, sticky="NEWS")
             self.blank_col += 1    
         
-
 app = Application()
 app.master.title('15 PUZZLE')
 app.mainloop()
