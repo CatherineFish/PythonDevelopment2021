@@ -33,7 +33,7 @@ class Application(tk.Frame):
         self.listOfNumberButton = list()
         self.numbers = list()
         self.listNum = list(range(1, 1 + PUZZLE_NUM))
-
+        
         #Blank space
         self.blank_row = 4
         self.blank_col = 3
@@ -55,14 +55,13 @@ class Application(tk.Frame):
         f = True
         while f:
             shuffle(self.listNum)
+            sum = 0
             for i in range(PUZZLE_NUM):
-                sum = 0
-                for j in range(i):
+                for j in range(i, PUZZLE_NUM):
                     if self.listNum[j] < self.listNum[i]:
                         sum += 1
             if not(sum % 2):
                 f = False
-        
         for i in range(PUZZLE_NUM):
             self.numbers[i].set(self.listNum[i])
             self.listOfNumberButton[i].grid(row=1 + int(i / 4), column=int(i % 4), sticky="NEWS")        
