@@ -42,13 +42,11 @@ class Application(tk.Frame):
             self.numbers.append(tk.StringVar())
         for i in range(PUZZLE_NUM):
             self.listOfNumberButton.append(tk.Button(self, textvariable=self.numbers[i], command=partial(self.move, i)))
-        self.new()
-
+        
         #Grid
         self.newButton.grid(row=0, column=0, columnspan=2,  sticky="NEWS")
         self.exitButton.grid(row=0, column=2, columnspan=2, sticky="NEWS")   
-        for i in range(PUZZLE_NUM):
-            self.listOfNumberButton[i].grid(row=1 + int(i / 4), column=int(i % 4), sticky="NEWS")        
+        self.new()
         
 
     def new(self):
@@ -56,6 +54,8 @@ class Application(tk.Frame):
         shuffle(self.listNum)
         for i in range(PUZZLE_NUM):
             self.numbers[i].set(self.listNum[i])
+            self.listOfNumberButton[i].grid(row=1 + int(i / 4), column=int(i % 4), sticky="NEWS")        
+        
 
     
     def exit(self):
