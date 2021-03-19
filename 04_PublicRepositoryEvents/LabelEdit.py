@@ -24,7 +24,12 @@ class InputLabel(tk.Label):
     def __init__(self, master=None, **kwargs):
         self.textField = tk.StringVar()
         self.textField.set("My Label")
-        super().__init__(master, text="Label", takefocus=True, highlightthickness=2)
+        super().__init__(master, textvariable=self.textField, 
+            takefocus=True, highlightthickness=3, highlightcolor='#000fff000')
+        self.bind('<Button-1>', self.mouse_click)
+
+    def mouse_click(self, event):
+        self.focus()
 
 class App(Application):
     def create_widgets(self):
