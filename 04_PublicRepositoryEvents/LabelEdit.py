@@ -22,7 +22,7 @@ class Application(tk.Frame):
 
 class InputLabel(tk.Label):
     def __init__(self, master=None, **kwargs):
-        self.char_size = 10
+        self.char_size = 20
         self.textField = tk.StringVar()
         #self.textField.set("My Label")
         super().__init__(master, textvariable=self.textField, 
@@ -36,6 +36,8 @@ class InputLabel(tk.Label):
     def mouse_click(self, event):
         '''Mouse click handler'''
         self.focus()
+        print(event.x, " ", event.x // self.char_size, " ", len(self.textField.get()))
+        self.cursor.place(x=min(event.x // self.char_size, len(self.textField.get())) * self.char_size, y=0)
 
     def key_click(self, event):
         '''Key click handler'''
