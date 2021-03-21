@@ -46,11 +46,9 @@ class InputLabel(tk.Label):
             self.x_position += self.char_width
         elif event.keysym == "Left":
             self.x_position -= self.char_width
-        elif event.keysym == "Home":
-            print("HOME")
+        elif event.keysym == "KP_Home":
             self.x_position = 0
-        elif event.keysym == "End":
-            print("END")
+        elif event.keysym == "KP_End":
             self.x_position = len(self.textField.get()) * self.char_width
         elif event.keysym == "BackSpace":
             if len(self.textField.get()) > 1:
