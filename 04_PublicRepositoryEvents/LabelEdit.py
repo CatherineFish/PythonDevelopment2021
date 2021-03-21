@@ -30,15 +30,18 @@ class InputLabel(tk.Label):
             anchor="w")
         self.bind('<Button-1>', self.mouse_click)
         self.bind('<KeyPress>', self.key_click)
+        #focused from begining
+        #self.focus()
         self.cursor = tk.Frame(self, background='#000000', width=1)
-        self.cursor.place(x=0, y=0, height=1.5 * self.char_size)
+        #cursor from begining
+        #self.cursor.place(x=0, y=0, height=1.5 * self.char_size)
         self.x_position = 0        
 
     def mouse_click(self, event):
         '''Mouse click handler'''
         self.focus()
         self.x_position = min(event.x // self.char_width, len(self.textField.get())) * self.char_width
-        self.cursor.place(x=self.x_position, y=0)
+        self.cursor.place(x=self.x_position, y=0, height=1.5 * self.char_size)
 
     def key_click(self, event):
         '''Key click handler'''
@@ -46,9 +49,9 @@ class InputLabel(tk.Label):
             self.x_position += self.char_width
         elif event.keysym == "Left":
             self.x_position -= self.char_width
-        elif event.keysym == "KP_Home":
+        elif event.keysym in ["KP_Home", "Home", "Up"]:
             self.x_position = 0
-        elif event.keysym == "KP_End":
+        elif event.keysym in ["KP_End", "End", "Down"]:
             self.x_position = len(self.textField.get()) * self.char_width
         elif event.keysym == "BackSpace":
             if len(self.textField.get()) > 1:
