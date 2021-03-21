@@ -25,7 +25,6 @@ class InputLabel(tk.Label):
         self.char_size = 20
         self.char_width = 16
         self.textField = tk.StringVar()
-        #self.textField.set("My Label")
         super().__init__(master, textvariable=self.textField, 
             takefocus=True, highlightthickness=3, highlightcolor='#000fff000', font=("Courier", self.char_size),
             anchor="w")
@@ -38,12 +37,11 @@ class InputLabel(tk.Label):
     def mouse_click(self, event):
         '''Mouse click handler'''
         self.focus()
-        #print(event.x, " ", event.x // self.char_size, " ", len(self.textField.get()))
-        self.cursor.place(x=min(event.x // self.char_width, len(self.textField.get())) * self.char_width, y=0)
+        self.x_position = min(event.x // self.char_width, len(self.textField.get())) * self.char_width
+        self.cursor.place(x=self.x_position, y=0)
 
     def key_click(self, event):
         '''Key click handler'''
-        #print("X_COORD: ", self.x_position, " ", self.x_position // self.char_size)
         if event.keysym == "Right":
             self.x_position += self.char_width
         elif event.keysym == "Left":
@@ -54,12 +52,20 @@ class InputLabel(tk.Label):
         elif event.keysym == "End":
             print("END")
             self.x_position = len(self.textField.get()) * self.char_width
+        elif event.keysym == "BackSpace":
+            if len(self.textField.get()) > 1:
+                self.textField.set(self.textField.get()[:self.x_position // self.char_width - 1] + self.textField.get()[self.x_position // self.char_width:])
+                self.x_position -= self.char_width
+            else:
+                self.textField.set("")
+                self.x_position = 0
         elif event.char.isprintable():
-            print("HERE")
-            self.textField.set(self.textField.get() + event.char)
+            if self.textField.get():
+                self.textField.set(self.textField.get()[:self.x_position // self.char_width] + event.char + self.textField.get()[self.x_position // self.char_width:])
+            else:
+                self.textField.set(self.textField.get() + event.char)
             self.x_position += self.char_width
         self.cursor.place(x=self.x_position, y=0)
-        #print("X_COORD AFTER: ", self.x_position, " ", self.x_position // self.char_size)
         
 
 class App(Application):
