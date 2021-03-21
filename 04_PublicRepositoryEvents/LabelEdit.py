@@ -46,14 +46,19 @@ class InputLabel(tk.Label):
         #print("X_COORD: ", self.x_position, " ", self.x_position // self.char_size)
         if event.keysym == "Right":
             self.x_position += self.char_width
-            self.cursor.place(x=self.x_position - 5, y=0)
         elif event.keysym == "Left":
             self.x_position -= self.char_width
-            self.cursor.place(x=self.x_position - 5, y=0)
+        elif event.keysym == "Home":
+            print("HOME")
+            self.x_position = 0
+        elif event.keysym == "End":
+            print("END")
+            self.x_position = len(self.textField.get()) * self.char_width
         elif event.char.isprintable():
+            print("HERE")
             self.textField.set(self.textField.get() + event.char)
             self.x_position += self.char_width
-            self.cursor.place(x=self.x_position, y=0)
+        self.cursor.place(x=self.x_position, y=0)
         #print("X_COORD AFTER: ", self.x_position, " ", self.x_position // self.char_size)
         
 
