@@ -28,7 +28,8 @@ class InputLabel(tk.Label):
             takefocus=True, highlightthickness=3, highlightcolor='#000fff000')
         self.bind('<Button-1>', self.mouse_click)
         self.bind('<KeyPress>', self.key_click)
-
+        self.cursor = tk.Frame(self, background='#000000', width=3)
+        self.cursor.place(x=0, y=0, height=20)        
 
     def mouse_click(self, event):
         '''Mouse click handler'''
