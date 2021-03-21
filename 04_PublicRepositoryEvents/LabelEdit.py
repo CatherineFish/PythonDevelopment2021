@@ -22,14 +22,16 @@ class Application(tk.Frame):
 
 class InputLabel(tk.Label):
     def __init__(self, master=None, **kwargs):
+        self.char_size = 10
         self.textField = tk.StringVar()
         #self.textField.set("My Label")
         super().__init__(master, textvariable=self.textField, 
-            takefocus=True, highlightthickness=3, highlightcolor='#000fff000')
+            takefocus=True, highlightthickness=3, highlightcolor='#000fff000', font=("Courier", self.char_size),
+            anchor="w")
         self.bind('<Button-1>', self.mouse_click)
         self.bind('<KeyPress>', self.key_click)
-        self.cursor = tk.Frame(self, background='#000000', width=3)
-        self.cursor.place(x=0, y=0, height=20)        
+        self.cursor = tk.Frame(self, background='#000000', width=1)
+        self.cursor.place(x=0, y=0, height=1.5 * self.char_size)        
 
     def mouse_click(self, event):
         '''Mouse click handler'''
@@ -44,8 +46,8 @@ class App(Application):
         super().create_widgets()
         self.L = InputLabel(self)
         self.Q = tk.Button(self, text="Quit", command=self.master.quit)
-        self.Q.grid(row=1, sticky="ES")
-        self.L.grid(row=0)
+        self.Q.grid(row=1, sticky="NES")
+        self.L.grid(row=0, sticky="NEWS")
         
 app = App(title="LabelEdit application")
 app.mainloop()
