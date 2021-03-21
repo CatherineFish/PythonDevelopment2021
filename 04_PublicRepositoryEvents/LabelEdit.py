@@ -23,6 +23,7 @@ class Application(tk.Frame):
 class InputLabel(tk.Label):
     def __init__(self, master=None, **kwargs):
         self.char_size = 20
+        self.char_width = 16
         self.textField = tk.StringVar()
         #self.textField.set("My Label")
         super().__init__(master, textvariable=self.textField, 
@@ -31,17 +32,30 @@ class InputLabel(tk.Label):
         self.bind('<Button-1>', self.mouse_click)
         self.bind('<KeyPress>', self.key_click)
         self.cursor = tk.Frame(self, background='#000000', width=1)
-        self.cursor.place(x=0, y=0, height=1.5 * self.char_size)        
+        self.cursor.place(x=0, y=0, height=1.5 * self.char_size)
+        self.x_position = 0        
 
     def mouse_click(self, event):
         '''Mouse click handler'''
         self.focus()
-        print(event.x, " ", event.x // self.char_size, " ", len(self.textField.get()))
-        self.cursor.place(x=min(event.x // self.char_size, len(self.textField.get())) * self.char_size, y=0)
+        #print(event.x, " ", event.x // self.char_size, " ", len(self.textField.get()))
+        self.cursor.place(x=min(event.x // self.char_width, len(self.textField.get())) * self.char_width, y=0)
 
     def key_click(self, event):
         '''Key click handler'''
-        self.textField.set(self.textField.get() + event.char)
+        #print("X_COORD: ", self.x_position, " ", self.x_position // self.char_size)
+        if event.keysym == "Right":
+            self.x_position += self.char_width
+            self.cursor.place(x=self.x_position - 5, y=0)
+        elif event.keysym == "Left":
+            self.x_position -= self.char_width
+            self.cursor.place(x=self.x_position - 5, y=0)
+        elif event.char.isprintable():
+            self.textField.set(self.textField.get() + event.char)
+            self.x_position += self.char_width
+            self.cursor.place(x=self.x_position, y=0)
+        #print("X_COORD AFTER: ", self.x_position, " ", self.x_position // self.char_size)
+        
 
 class App(Application):
     def create_widgets(self):
