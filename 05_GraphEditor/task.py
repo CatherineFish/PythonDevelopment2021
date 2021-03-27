@@ -53,9 +53,8 @@ class App(Application):
             self.oval_coord[1] = event.y
             self.oval_coord[3] = event.y
             if self.canvas.find_overlapping(*self.oval_coord):
-                print("OVERLAP: ", self.canvas.find_overlapping(*self.oval_coord))
-                #self.cur_fig = self.canvas.find_overlapping(event.x, event.y, event.x, event.y)
-                self.mode = 0 #move-mode
+                self.cur_fig = self.canvas.find_overlapping(*self.oval_coord)[-1]
+                self.mode = 0 #Move-mode
             else:
                 self.cur_fig = self.canvas.create_oval(*self.oval_coord)
                 self.mode = 1 #Draw-mode
@@ -75,11 +74,15 @@ class App(Application):
     def releaseMouse(self, event):
         '''Mouse release handler'''
         if self.init_state:
-            self.canvas.delete(self.cur_fig)
-            self.oval_coord[2] = event.x
-            self.oval_coord[3] = event.y
-            self.cur_fig = self.canvas.create_oval(*self.oval_coord, fill= '#FF69B4', outline='#8B008B', width=2)
+            if self.mode:
+                self.canvas.delete(self.cur_fig)
+                self.oval_coord[2] = event.x
+                self.oval_coord[3] = event.y
+                self.cur_fig = self.canvas.create_oval(*self.oval_coord, fill= '#FF69B4', outline='#8B008B', width=2)
+            else: 
+                self.canvas.move(self.cur_fig, event.x - self.oval_coord[0], event.y - self.oval_coord[1])
             self.init_state = 0
+
 
 app = App(title="Sample application")
 app.mainloop()
