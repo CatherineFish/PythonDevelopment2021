@@ -171,7 +171,8 @@ class App(Application):
                         curFig = self.canvas.create_arc(coords.split('\n'), fill=fill, outline=outline, width=width)
                     elif shape == 'rectangle':
                         curFig = self.canvas.create_rectangle(coords.split('\n'), fill=fill, outline=outline, width=width)
-                    
+                    else:
+                        raise Exception
                 except:
                     self.figureLog.append(0)
                     self.figureLogShape.append("0")
