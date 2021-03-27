@@ -29,7 +29,9 @@ class App(Application):
         super().create_widgets()
         self.figureLog = []
         self.text = tk.Text(self, undo=True, wrap=tk.WORD, font="fixed")
-        
+        self.text.tag_config('correct', background='white')
+        self.text.tag_config('incorrect', background='red')
+
         self.mode, self.cur_fig, self.init_state, self.oval_coord = 1, 0, 0, [0., 0., 0., 0.]
         self.canvas = tk.Canvas(self)
         self.canvas.bind("<Button-1>", self.justClickMouse)
@@ -99,8 +101,16 @@ class App(Application):
         text = self.text.get('1.0', tk.END).split("\n")
         for figure in text:
             if len(figure):
-                coords, width, outline, fill = re.findall(r"oval <(.*)> width=(.*) outline=(.*) fill=(.*)", figure)[0]
-                self.figureLog.append(self.canvas.create_oval(coords.split(' '), width=width, outline=outline, fill=fill))
-
+                try:    
+                    coords, width, outline, fill = re.findall(r"oval <(.*)> width=(.*) outline=(.*) fill=(.*)", figure)[0]
+                    curFig = self.canvas.create_oval(coords.split(' '), width=width, outline=outline, fill=fill)
+                except:
+                    self.figureLog.append(0)
+                    self.text.tag_remove('correct', str(len(self.figureLog)) + '.0', str(len(self.figureLog)) + '.end')
+                    self.text.tag_add('incorrect', str(len(self.figureLog)) + '.0', str(len(self.figureLog)) + '.end') 
+                else:
+                    self.figureLog.append(curFig)
+                    self.text.tag_remove('incorrect', str(len(self.figureLog)) + '.0', str(len(self.figureLog)) + '.end')
+                    self.text.tag_add('correct', str(len(self.figureLog)) + '.0', str(len(self.figureLog)) + '.end')
 app = App(title="Sample application")
 app.mainloop()
