@@ -32,6 +32,7 @@ class App(Application):
         self.init_state = 0
         self.oval_coord = [0., 0., 0., 0.]
         self.canvas = tk.Canvas(self)
+        self.canvas.bind("<Button-1>", self.justClickMouse)
         self.canvas.bind("<B1-Motion>", self.clickMouse)
         self.canvas.bind("<ButtonRelease-1>", self.releaseMouse)
         self.Q = tk.Button(self, text="Quit", command=self.master.quit)
@@ -39,6 +40,10 @@ class App(Application):
         self.text.grid(row=0, column=0, sticky="NEWS")
         self.canvas.grid(row=0, column=1, sticky="NEWS")
         self.Q.grid(row=1, columnspan=2, sticky="NEWS")
+
+    def justClickMouse(self, event):
+        '''Only Mouse click handler'''
+        pass
 
     def clickMouse(self, event):
         '''Mouse click handler'''
@@ -69,11 +74,12 @@ class App(Application):
             
     def releaseMouse(self, event):
         '''Mouse release handler'''
-        self.canvas.delete(self.cur_fig)
-        self.oval_coord[2] = event.x
-        self.oval_coord[3] = event.y
-        self.cur_fig = self.canvas.create_oval(*self.oval_coord, fill= '#FF69B4', outline='#8B008B', width=2)
-        self.init_state = 0
+        if self.init_state:
+            self.canvas.delete(self.cur_fig)
+            self.oval_coord[2] = event.x
+            self.oval_coord[3] = event.y
+            self.cur_fig = self.canvas.create_oval(*self.oval_coord, fill= '#FF69B4', outline='#8B008B', width=2)
+            self.init_state = 0
 
 app = App(title="Sample application")
 app.mainloop()
