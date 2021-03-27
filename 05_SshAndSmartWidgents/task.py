@@ -162,6 +162,8 @@ class App(Application):
         for figure in self.canvas.find_all():
             self.canvas.delete(figure)
         self.figureLog.clear()
+        self.figureLogShape.clear()
+        
         text = self.text.get('1.0', tk.END).split("\n")
         for figure in text:
             if len(figure):
@@ -191,7 +193,8 @@ class App(Application):
         '''Write button handler'''
         self.text.delete('1.0', tk.END)
         for idx in range(len(self.figureLog)):
-            self.text.insert(str(self.figureLog.index(self.figureLog[idx]) + 1) + '.0', f"{self.figureLogShape[idx]} <{self.canvas.coords(self.figureLog[idx])[0]} {self.canvas.coords(self.figureLog[idx])[1]} {self.canvas.coords(self.figureLog[idx])[2]} {self.canvas.coords(self.figureLog[idx])[3]}> width={self.canvas.itemconfigure(self.figureLog[idx])['width'][-1]} outline={self.canvas.itemconfigure(self.figureLog[idx])['outline'][-1]} fill={self.canvas.itemconfigure(self.figureLog[idx])['fill'][-1]}\n")
+            if self.figureLogShape[idx] != '0':
+                self.text.insert(str(self.figureLog.index(self.figureLog[idx]) + 1) + '.0', f"{self.figureLogShape[idx]} <{self.canvas.coords(self.figureLog[idx])[0]} {self.canvas.coords(self.figureLog[idx])[1]} {self.canvas.coords(self.figureLog[idx])[2]} {self.canvas.coords(self.figureLog[idx])[3]}> width={self.canvas.itemconfigure(self.figureLog[idx])['width'][-1]} outline={self.canvas.itemconfigure(self.figureLog[idx])['outline'][-1]} fill={self.canvas.itemconfigure(self.figureLog[idx])['fill'][-1]}\n")
             
             
 
