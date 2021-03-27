@@ -26,11 +26,10 @@ class Application(tk.Frame):
 class App(Application):
     def create_widgets(self):
         super().create_widgets()
+        self.figureLog = []
         self.text = tk.Text(self, undo=True, wrap=tk.WORD, font="fixed")
-        self.mode = 1
-        self.cur_fig = 0
-        self.init_state = 0
-        self.oval_coord = [0., 0., 0., 0.]
+        
+        self.mode, self.cur_fig, self.init_state, self.oval_coord = 1, 0, 0, [0., 0., 0., 0.]
         self.canvas = tk.Canvas(self)
         self.canvas.bind("<Button-1>", self.justClickMouse)
         self.canvas.bind("<B1-Motion>", self.clickMouse)
@@ -80,10 +79,12 @@ class App(Application):
                 self.oval_coord[3] = event.y
                 self.cur_fig = self.canvas.create_oval(*self.oval_coord, fill= '#FF69B4', outline='#8B008B', width=2)
 
-
+                self.figureLog.append(self.cur_fig)
                 self.text.insert(tk.END, f"oval <{self.canvas.coords(self.cur_fig)[0]} {self.canvas.coords(self.cur_fig)[1]} {self.canvas.coords(self.cur_fig)[2]} {self.canvas.coords(self.cur_fig)[3]}> width={self.canvas.itemconfigure(self.cur_fig)['width'][-1]} outline={self.canvas.itemconfigure(self.cur_fig)['outline'][-1]} fill={self.canvas.itemconfigure(self.cur_fig)['fill'][-1]}\n")
             else: 
                 self.canvas.move(self.cur_fig, event.x - self.oval_coord[0], event.y - self.oval_coord[1])
+                self.text.delete(str(self.figureLog.index(self.cur_fig) + 1) + '.0', str(self.figureLog.index(self.cur_fig) + 1) + '.end')
+                self.text.insert(str(self.figureLog.index(self.cur_fig) + 1) + '.0', f"oval <{self.canvas.coords(self.cur_fig)[0]} {self.canvas.coords(self.cur_fig)[1]} {self.canvas.coords(self.cur_fig)[2]} {self.canvas.coords(self.cur_fig)[3]}> width={self.canvas.itemconfigure(self.cur_fig)['width'][-1]} outline={self.canvas.itemconfigure(self.cur_fig)['outline'][-1]} fill={self.canvas.itemconfigure(self.cur_fig)['fill'][-1]}\n")
             self.init_state = 0
 
 
