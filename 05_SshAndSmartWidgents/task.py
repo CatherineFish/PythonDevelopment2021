@@ -90,7 +90,7 @@ class App(Application):
             else: 
                 self.canvas.move(self.cur_fig, event.x - self.oval_coord[0], event.y - self.oval_coord[1])
                 self.text.delete(str(self.figureLog.index(self.cur_fig) + 1) + '.0', str(self.figureLog.index(self.cur_fig) + 1) + '.end')
-                self.text.insert(str(self.figureLog.index(self.cur_fig) + 1) + '.0', f"oval <{self.canvas.coords(self.cur_fig)[0]} {self.canvas.coords(self.cur_fig)[1]} {self.canvas.coords(self.cur_fig)[2]} {self.canvas.coords(self.cur_fig)[3]}> width={self.canvas.itemconfigure(self.cur_fig)['width'][-1]} outline={self.canvas.itemconfigure(self.cur_fig)['outline'][-1]} fill={self.canvas.itemconfigure(self.cur_fig)['fill'][-1]}\n")
+                self.text.insert(str(self.figureLog.index(self.cur_fig) + 1) + '.0', f"oval <{self.canvas.coords(self.cur_fig)[0]} {self.canvas.coords(self.cur_fig)[1]} {self.canvas.coords(self.cur_fig)[2]} {self.canvas.coords(self.cur_fig)[3]}> width={self.canvas.itemconfigure(self.cur_fig)['width'][-1]} outline={self.canvas.itemconfigure(self.cur_fig)['outline'][-1]} fill={self.canvas.itemconfigure(self.cur_fig)['fill'][-1]}")
             self.init_state = 0
 
     def draw(self):
