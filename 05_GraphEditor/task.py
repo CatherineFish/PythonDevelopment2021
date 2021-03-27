@@ -27,13 +27,53 @@ class App(Application):
     def create_widgets(self):
         super().create_widgets()
         self.text = tk.Text(self, undo=True, wrap=tk.WORD, font="fixed")
+        self.mode = 1
+        self.cur_fig = 0
+        self.init_state = 0
+        self.oval_coord = [0., 0., 0., 0.]
         self.canvas = tk.Canvas(self)
+        self.canvas.bind("<B1-Motion>", self.clickMouse)
+        self.canvas.bind("<ButtonRelease-1>", self.releaseMouse)
         self.Q = tk.Button(self, text="Quit", command=self.master.quit)
         
         self.text.grid(row=0, column=0, sticky="NEWS")
         self.canvas.grid(row=0, column=1, sticky="NEWS")
         self.Q.grid(row=1, columnspan=2, sticky="NEWS")
 
+    def clickMouse(self, event):
+        '''Mouse click handler'''
+        if not self.init_state:
+            self.oval_coord[0] = event.x
+            self.oval_coord[2] = event.x
+            self.oval_coord[1] = event.y
+            self.oval_coord[3] = event.y
+            if self.canvas.find_overlapping(*self.oval_coord):
+                print("OVERLAP: ", self.canvas.find_overlapping(*self.oval_coord))
+                #self.cur_fig = self.canvas.find_overlapping(event.x, event.y, event.x, event.y)
+                self.mode = 0 #move-mode
+            else:
+                self.cur_fig = self.canvas.create_oval(*self.oval_coord)
+                self.mode = 1 #Draw-mode
+            self.init_state = 1
+        elif self.mode:
+            self.canvas.delete(self.cur_fig)
+            self.oval_coord[2] = event.x
+            self.oval_coord[3] = event.y
+            self.cur_fig = self.canvas.create_oval(*self.oval_coord, fill= '#FF69B4', outline='#8B008B', width=2)
+        else:
+            self.canvas.move(self.cur_fig, event.x - self.oval_coord[0], event.y - self.oval_coord[1])
+            self.oval_coord[0] = event.x
+            self.oval_coord[2] = event.x
+            self.oval_coord[1] = event.y
+            self.oval_coord[3] = event.y
+            
+    def releaseMouse(self, event):
+        '''Mouse release handler'''
+        self.canvas.delete(self.cur_fig)
+        self.oval_coord[2] = event.x
+        self.oval_coord[3] = event.y
+        self.cur_fig = self.canvas.create_oval(*self.oval_coord, fill= '#FF69B4', outline='#8B008B', width=2)
+        self.init_state = 0
 
 app = App(title="Sample application")
 app.mainloop()
