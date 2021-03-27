@@ -112,5 +112,6 @@ class App(Application):
                     self.figureLog.append(curFig)
                     self.text.tag_remove('incorrect', str(len(self.figureLog)) + '.0', str(len(self.figureLog)) + '.end')
                     self.text.tag_add('correct', str(len(self.figureLog)) + '.0', str(len(self.figureLog)) + '.end')
-app = App(title="Sample application")
+
+app = App(title="Graph Editor")
 app.mainloop()
