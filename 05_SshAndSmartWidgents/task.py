@@ -49,7 +49,7 @@ class App(Application):
         self.varWidth.set(self.optionWidth[2])
         self.optionWidth = tk.OptionMenu(self, self.varWidth, *self.optionWidth)
 
-        self.optionShape = ('oval', 'rectangle', 'arc', 'line')
+        self.optionShape = ('oval', 'rectangle', 'arc')
         self.varShape = tk.StringVar()
         self.varShape.set(self.optionShape[0])
         self.optionShape = tk.OptionMenu(self, self.varShape, *self.optionShape)
@@ -104,8 +104,6 @@ class App(Application):
                     self.cur_fig = self.canvas.create_arc(*self.oval_coord, fill=self.varColor.get(), outline=self.varOutline.get(), width=self.varWidth.get())
                 elif self.varShape.get() == 'rectangle':
                     self.cur_fig = self.canvas.create_rectangle(*self.oval_coord, fill=self.varColor.get(), outline=self.varOutline.get(), width=self.varWidth.get())
-                elif self.varShape.get() == 'line':
-                    self.cur_fig = self.canvas.create_line(*self.oval_coord, fill=self.varColor.get(), width=self.varWidth.get())
                 self.mode = 1 #Draw-mode
             self.init_state = 1
         elif self.mode:
@@ -118,8 +116,6 @@ class App(Application):
                 self.cur_fig = self.canvas.create_arc(*self.oval_coord, fill=self.varColor.get(), outline=self.varOutline.get(), width=self.varWidth.get())
             elif self.varShape.get() == 'rectangle':
                 self.cur_fig = self.canvas.create_rectangle(*self.oval_coord, fill=self.varColor.get(), outline=self.varOutline.get(), width=self.varWidth.get())
-            elif self.varShape.get() == 'line':
-                self.cur_fig = self.canvas.create_line(*self.oval_coord, fill=self.varColor.get(), width=self.varWidth.get())
         else:
             self.canvas.move(self.cur_fig, event.x - self.oval_coord[0], event.y - self.oval_coord[1])
             self.oval_coord[0] = event.x
@@ -143,9 +139,6 @@ class App(Application):
                 elif self.varShape.get() == 'rectangle':
                     self.cur_fig = self.canvas.create_rectangle(*self.oval_coord, fill=self.varColor.get(), outline=self.varOutline.get(), width=self.varWidth.get())
                     self.text.insert(tk.END, f"rectangle <{self.canvas.coords(self.cur_fig)[0]} {self.canvas.coords(self.cur_fig)[1]} {self.canvas.coords(self.cur_fig)[2]} {self.canvas.coords(self.cur_fig)[3]}> width={self.canvas.itemconfigure(self.cur_fig)['width'][-1]} outline={self.canvas.itemconfigure(self.cur_fig)['outline'][-1]} fill={self.canvas.itemconfigure(self.cur_fig)['fill'][-1]}\n")
-                elif self.varShape.get() == 'line':
-                    self.cur_fig = self.canvas.create_line(*self.oval_coord, fill=self.varColor.get(), width=self.varWidth.get())
-                    self.text.insert(tk.END, f"line <{self.canvas.coords(self.cur_fig)[0]} {self.canvas.coords(self.cur_fig)[1]} {self.canvas.coords(self.cur_fig)[2]} {self.canvas.coords(self.cur_fig)[3]}> width={self.canvas.itemconfigure(self.cur_fig)['width'][-1]} fill={self.canvas.itemconfigure(self.cur_fig)['fill'][-1]}\n")
                 
                 self.figureLog.append(self.cur_fig)
                 self.figureLogShape.append(self.varShape.get())
@@ -160,8 +153,6 @@ class App(Application):
                     self.text.insert(str(self.figureLog.index(self.cur_fig) + 1) + '.0', f"arc <{self.canvas.coords(self.cur_fig)[0]} {self.canvas.coords(self.cur_fig)[1]} {self.canvas.coords(self.cur_fig)[2]} {self.canvas.coords(self.cur_fig)[3]}> width={self.canvas.itemconfigure(self.cur_fig)['width'][-1]} outline={self.canvas.itemconfigure(self.cur_fig)['outline'][-1]} fill={self.canvas.itemconfigure(self.cur_fig)['fill'][-1]}")
                 elif self.figureLogShape[self.figureLog.index(self.cur_fig)] == 'rectangle':
                     self.text.insert(str(self.figureLog.index(self.cur_fig) + 1) + '.0', f"rectangle <{self.canvas.coords(self.cur_fig)[0]} {self.canvas.coords(self.cur_fig)[1]} {self.canvas.coords(self.cur_fig)[2]} {self.canvas.coords(self.cur_fig)[3]}> width={self.canvas.itemconfigure(self.cur_fig)['width'][-1]} outline={self.canvas.itemconfigure(self.cur_fig)['outline'][-1]} fill={self.canvas.itemconfigure(self.cur_fig)['fill'][-1]}")
-                elif self.figureLogShape[self.figureLog.index(self.cur_fig)] == 'line':
-                    self.text.insert(str(self.figureLog.index(self.cur_fig) + 1) + '.0', f"line <{self.canvas.coords(self.cur_fig)[0]} {self.canvas.coords(self.cur_fig)[1]} {self.canvas.coords(self.cur_fig)[2]} {self.canvas.coords(self.cur_fig)[3]}> width={self.canvas.itemconfigure(self.cur_fig)['width'][-1]} fill={self.canvas.itemconfigure(self.cur_fig)['fill'][-1]}")
             self.init_state = 0
 
     def draw(self):
@@ -180,10 +171,10 @@ class App(Application):
                         curFig = self.canvas.create_arc(coords.split('\n'), fill=fill, outline=outline, width=width)
                     elif shape == 'rectangle':
                         curFig = self.canvas.create_rectangle(coords.split('\n'), fill=fill, outline=outline, width=width)
-                    elif shape == 'line':
-                        curFig = self.canvas.create_line(coords.split('\n'), fill=fill, width=width)
                     
                 except:
+                    self.figureLog.append(0)
+                    self.figureLogShape.append("0")
                     
                     self.text.tag_remove('correct', str(len(self.figureLog)) + '.0', str(len(self.figureLog)) + '.end')
                     self.text.tag_add('incorrect', str(len(self.figureLog)) + '.0', str(len(self.figureLog)) + '.end') 
