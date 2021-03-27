@@ -68,20 +68,22 @@ class App(Application):
         self.canvas.bind("<ButtonRelease-1>", self.releaseMouse)
        
         self.draw = tk.Button(self, text="Draw", command=self.draw) 
+        self.write = tk.Button(self, text="Write", command=self.write) 
         self.Q = tk.Button(self, text="Quit", command=self.master.quit)
         
-        self.optionColor.grid(row=1, column=1, sticky="NEWS")
-        self.optionWidth.grid(row=1, column=2, sticky="NEWS")
-        self.optionOutline.grid(row=1, column=3, sticky="NEWS")
-        self.optionShape.grid(row=1, column=4, sticky="NEWS")
-        self.Color.grid(row=0, column=1, sticky="NEWS")
-        self.Width.grid(row=0, column=2, sticky="NEWS")
-        self.Outline.grid(row=0, column=3, sticky="NEWS")
-        self.Shape.grid(row=0, column=4, sticky="NEWS")
-        self.text.grid(row=2, column=0, sticky="NEWS")
-        self.canvas.grid(row=2, column=1, columnspan=4, sticky="NEWS")
+        self.optionColor.grid(row=1, column=2, sticky="NEWS")
+        self.optionWidth.grid(row=1, column=3, sticky="NEWS")
+        self.optionOutline.grid(row=1, column=4, sticky="NEWS")
+        self.optionShape.grid(row=1, column=5, sticky="NEWS")
+        self.Color.grid(row=0, column=2, sticky="NEWS")
+        self.Width.grid(row=0, column=3, sticky="NEWS")
+        self.Outline.grid(row=0, column=4, sticky="NEWS")
+        self.Shape.grid(row=0, column=5, sticky="NEWS")
+        self.text.grid(row=2, column=0, columnspan=2, sticky="NEWS")
+        self.canvas.grid(row=2, column=2, columnspan=4, sticky="NEWS")
         self.draw.grid(row=3, column=0, sticky="NEWS")
-        self.Q.grid(row=3, column=1, columnspan=4, sticky="NEWS")
+        self.write.grid(row=3, column=1, sticky="NEWS")        
+        self.Q.grid(row=3, column=2, columnspan=4, sticky="NEWS")
 
     def justClickMouse(self, event):
         '''Only Mouse click handler'''
@@ -184,6 +186,15 @@ class App(Application):
                     self.figureLogShape.append(shape)
                     self.text.tag_remove('incorrect', str(len(self.figureLog)) + '.0', str(len(self.figureLog)) + '.end')
                     self.text.tag_add('correct', str(len(self.figureLog)) + '.0', str(len(self.figureLog)) + '.end')
+
+    def write(self):
+        '''Write button handler'''
+        self.text.delete('1.0', tk.END)
+        for idx in range(len(self.figureLog)):
+            self.text.insert(str(self.figureLog.index(self.figureLog[idx]) + 1) + '.0', f"{self.figureLogShape[idx]} <{self.canvas.coords(self.figureLog[idx])[0]} {self.canvas.coords(self.figureLog[idx])[1]} {self.canvas.coords(self.figureLog[idx])[2]} {self.canvas.coords(self.figureLog[idx])[3]}> width={self.canvas.itemconfigure(self.figureLog[idx])['width'][-1]} outline={self.canvas.itemconfigure(self.figureLog[idx])['outline'][-1]} fill={self.canvas.itemconfigure(self.figureLog[idx])['fill'][-1]}\n")
+            
+            
+
 
 app = App(title="Graph Editor")
 app.mainloop()
